@@ -1,2 +1,11 @@
-# scorecalci-showcase
-AI-assisted sports scoring and tournament management platform built with Flutter, Firebase, CI/CD, and modern DevOps practices.
+# ScoreCalci
+
+Sports scoring and tournament management platform.
+
+Built using:
+
+- Flutter
+- Firebase
+- GitHub Actions
+- AI-assisted development
+- CI/CD workflows
