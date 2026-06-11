@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — ScoreCalci</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 24px 60px;
+      color: #1a1a1a;
+      line-height: 1.7;
+    }
+    h1 { font-size: 28px; margin-bottom: 4px; }
+    h2 { font-size: 18px; margin-top: 36px; margin-bottom: 8px; }
+    .meta { color: #666; font-size: 14px; margin-bottom: 40px; }
+    p, li { font-size: 15px; }
+    ul { padding-left: 20px; }
+    a { color: #1a73e8; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p class="meta">ScoreCalci &mdash; Effective date: June 11, 2026</p>
+
+  <h2>1. Overview</h2>
+  <p>
+    ScoreCalci is a sports scoring and tournament management application. This policy explains what
+    data we collect, how it is stored, and how it is used.
+  </p>
+
+  <h2>2. Data We Collect</h2>
+  <p>ScoreCalci collects only the data you create within the app:</p>
+  <ul>
+    <li><strong>Match records</strong> — scores, sport type, date, players/teams you enter.</li>
+    <li><strong>Tournament records</strong> — bracket data, round results, and tournament settings you create.</li>
+  </ul>
+  <p>We do <strong>not</strong> collect your name, email address, phone number, or any other
+  personally identifiable information.</p>
+
+  <h2>3. Authentication</h2>
+  <p>
+    ScoreCalci uses <strong>anonymous authentication</strong> via Firebase Auth. A random, non-identifiable
+    user ID is generated automatically when you first open the app. No registration, login form, or
+    personal credentials are required.
+  </p>
+
+  <h2>4. How Data Is Stored</h2>
+  <p>
+    Match and tournament data is stored in two places:
+  </p>
+  <ul>
+    <li><strong>On-device</strong> — using SharedPreferences for offline-first access.</li>
+    <li><strong>Cloud backup</strong> — using Google Cloud Firestore, scoped to your anonymous user ID.
+    No other user can read or write your data. Cloud sync requires an internet connection and is
+    used solely to let you back up and restore your data on the same device.</li>
+  </ul>
+
+  <h2>5. Data Sharing</h2>
+  <p>
+    We do not sell, trade, or share your data with third parties. Your data is stored in Google
+    Firebase infrastructure and governed by
+    <a href="https://firebase.google.com/support/privacy" target="_blank">Google's Privacy Policy</a>.
+  </p>
+
+  <h2>6. Data Deletion</h2>
+  <p>
+    You can delete all your match and tournament data from within the app at any time via the
+    Settings screen. Uninstalling the app removes all locally stored data.
+    Cloud data associated with your anonymous account is deleted within 180 days of inactivity.
+  </p>
+
+  <h2>7. Children's Privacy</h2>
+  <p>
+    ScoreCalci is not directed to children under 13. We do not knowingly collect personal
+    information from children.
+  </p>
+
+  <h2>8. Changes to This Policy</h2>
+  <p>
+    If we make material changes to this policy, we will update the effective date above and
+    publish the revised version at this URL.
+  </p>
+
+  <h2>9. Contact</h2>
+  <p>
+    Questions about this policy can be sent to
+    <a href="mailto:priteshkumar0405@gmail.com">priteshkumar0405@gmail.com</a>.
+  </p>
+</body>
+</html>
