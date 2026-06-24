@@ -781,7 +781,7 @@
             <div class="step-num">3</div>
             <div class="step-content">
               <h3>Clear Match History</h3>
-              <p>Tap <strong>Clear All Match History</strong> under the Danger Zone section to remove all local and cloud match data.</p>
+              <p>Tap <strong>Clear All Match History</strong> under the Danger Zone section to remove match history stored by the app. If cloud data remains associated with your anonymous account, you may request deletion by email.</p>
             </div>
           </div>
           <div class="step">
@@ -833,13 +833,13 @@
           </thead>
           <tbody>
             <tr><td>Local match history, players, tournaments</td><td>SharedPreferences (device)</td><td><span class="tag immediate">Immediate</span></td></tr>
-            <tr><td>Cloud match &amp; tournament records</td><td>Firebase Firestore</td><td><span class="tag immediate">Immediate</span></td></tr>
+            <tr><td>Cloud match &amp; tournament records</td><td>Firebase Firestore</td><td><span class="tag days30">Within 30 days</span></td></tr>
             <tr><td>Anonymous Firebase account</td><td>Firebase Auth</td><td><span class="tag days30">≤ 30 days</span></td></tr>
             <tr><td>App preferences &amp; theme settings</td><td>Device</td><td><span class="tag uninstall">On uninstall</span></td></tr>
           </tbody>
         </table>
         <div class="callout">
-          <p>We do not retain backups of deleted user data beyond the standard Firebase 30-day account deletion window.</p>
+          <p>After a deletion request is processed, user data is removed from the active application database. Some backup systems operated by service providers may retain data for a limited period according to their own retention policies.</p>
         </div>
       </div>
     </div>
