@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Deletion — ScoreCalci</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0d0f;
+      --surface:   #111518;
+      --border:    #1e2428;
+      --accent:    #00e676;
+      --accent-dim:#00e67622;
+      --text:      #e8eaec;
+      --muted:     #6b7580;
+      --danger:    #ff5252;
+      --danger-dim:#ff525214;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── green glow ── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #00e67608 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── header ── */
+    header {
+      position: relative;
+      z-index: 1;
+      border-bottom: 1px solid var(--border);
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: #000;
+      letter-spacing: -1px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: 0.5px;
+    }
+
+    .badge {
+      margin-left: auto;
+      background: var(--accent-dim);
+      border: 1px solid #00e67640;
+      color: var(--accent);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    /* ── hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 80px 40px 60px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: 0.95;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    h1 span {
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.65;
+    }
+
+    .hero-meta {
+      margin-top: 32px;
+      display: flex;
+      gap: 32px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .hero-meta span { color: var(--text); font-weight: 600; }
+
+    /* ── divider ── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--border) 40%, transparent 100%);
+    }
+
+    /* ── main layout ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 64px 40px 100px;
+      display: grid;
+      gap: 48px;
+    }
+
+    /* ── section cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .card-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid #00e67630;
+      padding: 2px 10px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .card-header h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .card-body {
+      padding: 28px;
+    }
+
+    p { color: var(--muted); margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+    p strong { color: var(--text); font-weight: 500; }
+
+    /* ── data table ── */
+    .data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .data-item {
+      background: var(--surface);
+      padding: 16px 20px;
+    }
+
+    .data-item:nth-child(-n+2) {
+      background: #0d1114;
+    }
+
+    .data-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .data-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .data-value.header {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── steps ── */
+    .steps {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--accent);
+      flex-shrink: 0;
+      background: var(--accent-dim);
+    }
+
+    .step-content h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      color: var(--text);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .step-content p {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* ── delete button card ── */
+    .action-card {
+      background: var(--danger-dim);
+      border: 1px solid #ff525230;
+      border-radius: 12px;
+      padding: 32px 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .action-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--danger);
+      margin-bottom: 8px;
+    }
+
+    .action-card h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .action-card p {
+      font-size: 14px;
+      margin: 0;
+      max-width: 440px;
+    }
+
+    .delete-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--danger);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: opacity 0.15s, transform 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .delete-btn svg { flex-shrink: 0; }
+
+    /* ── retention table ── */
+    .retention-list {
+      display: grid;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .retention-row {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .retention-row:last-child { border-bottom: none; }
+
+    .retention-row.header-row {
+      background: #0d1114;
+      padding: 10px 20px;
+    }
+
+    .retention-row .col-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .retention-row .name { font-size: 14px; color: var(--text); font-weight: 500; }
+    .retention-row .desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .pill.immediate { background: var(--danger-dim); color: var(--danger); border: 1px solid #ff525228; }
+    .pill.days30    { background: #ff980014; color: #ff9800; border: 1px solid #ff980028; }
+
+    /* ── contact ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .contact-item {
+      background: #0d1114;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+
+    .contact-item .clabel {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .contact-item a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .contact-item a:hover { text-decoration: underline; }
+    .contact-item .cval { font-size: 14px; color: var(--text); font-weight: 500; }
+
+    /* ── footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+    }
+
+    .footer-brand span { color: var(--accent); }
+
+    footer p {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── responsive ── */
+    @media (max-width: 640px) {
+      header, main, .hero, footer { padding-left: 20px; padding-right: 20px; }
+      .hero { padding-top: 48px; padding-bottom: 40px; }
+      .data-grid { grid-template-columns: 1fr; }
+      .action-card { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .hero-meta { flex-direction: column; gap: 12px; }
+      .retention-row { grid-template-columns: 1fr 90px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="logo">
+      <div class="logo-mark">SC</div>
+      <span class="logo-text">ScoreCalci</span>
+    </a>
+    <span class="badge">Data Policy</span>
+  </header>
+
+  <section class="hero">
+    <div class="hero-label">User Rights</div>
+    <h1>Data<span>Deletion</span></h1>
+    <p>We respect your right to control your personal data. This page explains what we store, how to request deletion, and what happens when you do.</p>
+    <div class="hero-meta">
+      Effective &nbsp;<span>June 2026</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      App &nbsp;<span>ScoreCalci v1.0</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      Platform &nbsp;<span>Android</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <main>
+
+    <!-- What we collect -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-num">01</span>
+        <h2>What Data We Collect</h2>
+      </div>
+      <div class="card-body">
+        <p>ScoreCalci collects minimal data required to provide match tracking, tournament management, and optional cloud sync functionality.</p>
+        <div class="data-grid">
+          <div class="data-item">
+            <div class="data-label">Category</div>
+            <div class="data-value header">Type</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">Storage</div>
+            <div class="data-value header">Location</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">Identity</div>
+            <div class="data-value">Anonymous Firebase UID</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">—</div>
+            <div class="data-value">Firebase (Cloud)</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">Match Data</div>
+            <div class="data-value">Scores, sport, players, duration, result</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">—</div>
+            <div class="data-value">Device + Firebase</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">Player Data</div>
+            <div class="data-value">Player names, avatar preferences</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">—</div>
+            <div class="data-value">Device only</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">Tournament Data</div>
+            <div class="data-value">Brackets, rounds, progression</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">—</div>
+            <div class="data-value">Device + Firebase</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">App Preferences</div>
+            <div class="data-value">Theme, settings</div>
+          </div>
+          <div class="data-item">
+            <div class="data-label">—</div>
+            <div class="data-value">Device only</div>
+          </div>
+        </div>
+        <p>We do <strong>not</strong> collect your name, email, phone number, location, payment information, or any other personally identifiable information. Authentication is fully anonymous.</p>
+      </div>
+    </div>
+
+    <!-- How to delete -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-num">02</span>
+        <h2>How to Delete Your Data</h2>
+      </div>
+      <div class="card-body">
+        <p>You can delete all your data directly from within the app at any time, without contacting us.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>Open Settings</h3>
+              <p>Tap the settings icon on the main screen of ScoreCalci.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>Go to Data &amp; Backup</h3>
+              <p>Select <strong>Data &amp; Backup</strong> from the settings menu.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>Clear Match History</h3>
+              <p>Tap <strong>Clear All Match History</strong> under the Danger Zone section to remove all local and cloud match data.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h3>Uninstall the App</h3>
+              <p>Uninstalling ScoreCalci removes all locally stored data (players, tournaments, preferences) from your device immediately.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Request deletion by email -->
+    <div class="action-card">
+      <div>
+        <div class="action-label">⚠ Alternative method</div>
+        <h2>Request Deletion by Email</h2>
+        <p>If you prefer, you can contact us directly to request deletion of your cloud data. We will process your request within 30 days and send confirmation.</p>
+      </div>
+      <a class="delete-btn" href="mailto:priteshkumar0405@gmail.com?subject=ScoreCalci%20Data%20Deletion%20Request&body=Hello%2C%0A%0AI%20would%20like%20to%20request%20deletion%20of%20all%20data%20associated%20with%20my%20ScoreCalci%20account.%0A%0ADevice%3A%20%5Byour%20device%5D%0AApproximate%20install%20date%3A%20%5Boptional%5D%0A%0AThank%20you.">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 4l8 9 8-9"/></svg>
+        Email Request
+      </a>
+    </div>
+
+    <!-- Retention -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-num">03</span>
+        <h2>Data Retention After Deletion</h2>
+      </div>
+      <div class="card-body">
+        <p>Once a deletion request is processed, here is how quickly each data type is removed:</p>
+        <div class="retention-list">
+          <div class="retention-row header-row">
+            <span class="col-label">Data Type</span>
+            <span class="col-label">Removed</span>
+          </div>
+          <div class="retention-row">
+            <div>
+              <div class="name">Local match history, players, tournaments</div>
+              <div class="desc">Stored on-device via SharedPreferences</div>
+            </div>
+            <span class="pill immediate">Immediate</span>
+          </div>
+          <div class="retention-row">
+            <div>
+              <div class="name">Cloud match &amp; tournament records</div>
+              <div class="desc">Stored in Firebase Firestore under your anonymous UID</div>
+            </div>
+            <span class="pill immediate">Immediate</span>
+          </div>
+          <div class="retention-row">
+            <div>
+              <div class="name">Anonymous Firebase account</div>
+              <div class="desc">Firebase Auth anonymous identity</div>
+            </div>
+            <span class="pill days30">≤ 30 days</span>
+          </div>
+          <div class="retention-row">
+            <div>
+              <div class="name">App preferences &amp; theme settings</div>
+              <div class="desc">Removed on app uninstall</div>
+            </div>
+            <span class="pill immediate">On uninstall</span>
+          </div>
+        </div>
+        <p style="margin-top:20px;">We do not retain backups of deleted user data beyond the standard Firebase 30-day account deletion window.</p>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-num">04</span>
+        <h2>Contact &amp; Support</h2>
+      </div>
+      <div class="card-body">
+        <p>For any questions regarding your data or this policy, reach out through the following channels:</p>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <div class="clabel">Email</div>
+            <a href="mailto:priteshkumar0405@gmail.com">priteshkumar0405@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <div class="clabel">App</div>
+            <div class="cval">ScoreCalci — Android</div>
+          </div>
+          <div class="contact-item">
+            <div class="clabel">Response Time</div>
+            <div class="cval">Within 30 days</div>
+          </div>
+          <div class="contact-item">
+            <div class="clabel">Policy Version</div>
+            <div class="cval">1.0 · June 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-brand">Score<span>Calci</span></div>
+    <p>© 2026 ScoreCalci. All rights reserved.</p>
+    <p>This page is hosted publicly for Play Console compliance.</p>
+  </footer>
+
+</body>
+</html>
