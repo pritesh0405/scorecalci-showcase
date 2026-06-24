@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Deletion — ScoreCalci</title>
+  <title>Privacy Policy — ScoreCalci</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
@@ -20,8 +20,6 @@
       --text:        #e8eaec;
       --muted:       #8a94a0;
       --danger:      #ff5252;
-      --danger-dim:  #ff525218;
-      --danger-ring: #ff525235;
       --mono:        'DM Mono', monospace;
     }
 
@@ -37,6 +35,7 @@
       overflow-x: hidden;
     }
 
+    /* grain */
     body::before {
       content: '';
       position: fixed;
@@ -54,12 +53,12 @@
       right: -160px;
       width: 480px;
       height: 480px;
-      background: radial-gradient(circle, #ff525206 0%, transparent 70%);
+      background: radial-gradient(circle, #00e67606 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* ══ HEADER ══ */
+    /* ══ STICKY HEADER ══ */
     header {
       position: sticky;
       top: 0;
@@ -147,8 +146,9 @@
       overflow: hidden;
     }
 
+    /* ghost watermark — full word, fades to right */
     .hero-left::before {
-      content: 'DELETE';
+      content: 'PRIVACY';
       position: absolute;
       bottom: -10px;
       left: 40px;
@@ -164,6 +164,7 @@
       white-space: nowrap;
     }
 
+    /* eyebrow — lines on both sides */
     .hero-eyebrow {
       font-family: var(--mono);
       font-size: 10px;
@@ -200,7 +201,7 @@
 
     .hero h1 em {
       font-style: italic;
-      color: var(--danger);
+      color: var(--accent);
       display: block;
     }
 
@@ -260,22 +261,22 @@
     .status-dot {
       width: 8px;
       height: 8px;
-      background: var(--danger);
+      background: var(--accent);
       border-radius: 50%;
-      box-shadow: 0 0 0 3px var(--danger-ring);
+      box-shadow: 0 0 0 3px var(--accent-ring);
       animation: pulse 2.5s infinite;
       flex-shrink: 0;
     }
 
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 3px var(--danger-ring); }
-      50%       { box-shadow: 0 0 0 6px var(--danger-dim); }
+      0%, 100% { box-shadow: 0 0 0 3px var(--accent-ring); }
+      50%       { box-shadow: 0 0 0 6px var(--accent-dim); }
     }
 
     .status-text {
       font-family: var(--mono);
       font-size: 11px;
-      color: var(--danger);
+      color: var(--accent);
       letter-spacing: 1px;
     }
 
@@ -357,13 +358,22 @@
       gap: 0;
       border-bottom: 1px solid var(--border);
       padding: 56px 0;
+      /* scroll animation */
       opacity: 1;
       transform: translateY(0);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
-    .section.will-animate { opacity: 0; transform: translateY(24px); }
-    .section.visible { opacity: 1; transform: translateY(0); }
+    .section.will-animate {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .section:last-child { border-bottom: none; }
 
     .section-aside {
@@ -404,57 +414,45 @@
       border-radius: 0 8px 8px 0;
       padding: 18px 22px;
       margin-bottom: 18px;
-      transition: background 0.2s;
-    }
-
-    .callout:hover { background: #1e272f; }
-    .callout:last-child { margin-bottom: 0; }
-    .callout p { margin: 0; font-size: 14px; }
-
-    /* steps */
-    .steps { display: grid; gap: 12px; margin-bottom: 18px; }
-    .steps:last-child { margin-bottom: 0; }
-
-    .step {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
       transition: border-color 0.2s, background 0.2s;
     }
 
-    .step:hover { background: #1e272f; border-color: #3a4850; }
+    .callout:hover { background: #1e272f; border-left-color: var(--accent); }
+    .callout:last-child { margin-bottom: 0; }
+    .callout p { margin: 0; font-size: 14px; }
 
-    .step-num {
-      width: 32px;
-      height: 32px;
-      background: var(--accent-dim);
-      border: 1px solid var(--accent-ring);
-      border-radius: 50%;
+    /* list */
+    ul {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    ul:last-child { margin-bottom: 0; }
+
+    ul li {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
+      gap: 10px;
+      align-items: flex-start;
       font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    ul li::before {
+      content: '→';
+      font-size: 12px;
       color: var(--accent);
+      margin-top: 4px;
       flex-shrink: 0;
+      font-family: var(--mono);
     }
 
-    .step-content h3 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
+    ul li strong { color: var(--text); font-weight: 500; }
 
-    .step-content p { margin: 0; font-size: 14px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
     /* table */
     .data-table {
@@ -505,52 +503,33 @@
       white-space: nowrap;
     }
 
-    .tag.immediate { background: var(--danger-dim); color: var(--danger); border: 1px solid var(--danger-ring); }
-    .tag.days30    { background: #ff980018; color: #ff9800; border: 1px solid #ff980035; }
-    .tag.uninstall { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-ring); }
+    .tag.device { background: #1565c018; color: #64b5f6; border: 1px solid #1565c030; }
+    .tag.cloud  { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-ring); }
+    .tag.both   { background: #6a1b9a18; color: #ce93d8; border: 1px solid #6a1b9a30; }
 
-    /* delete action */
-    .action-card {
-      background: var(--danger-dim);
-      border: 1px solid var(--danger-ring);
+    /* deletion cta */
+    .deletion-cta {
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 10px;
       padding: 24px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      margin-bottom: 18px;
       transition: border-color 0.2s;
     }
 
-    .action-card:hover { border-color: var(--danger); }
-    .action-card:last-child { margin-bottom: 0; }
-    .action-card p { margin: 0; font-size: 14px; max-width: 380px; }
+    .deletion-cta:hover { border-color: #3a4850; }
+    .deletion-cta p { margin: 0; font-size: 14px; max-width: 380px; }
 
-    .action-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--danger);
-      margin-bottom: 6px;
-    }
-
-    .action-card h3 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 18px;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .delete-btn {
+    .cta-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--danger);
-      color: #fff;
+      background: var(--accent);
+      color: #000;
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
       font-size: 14px;
@@ -562,14 +541,9 @@
       white-space: nowrap;
       flex-shrink: 0;
       transition: opacity 0.15s, transform 0.1s;
-      border: none;
-      cursor: pointer;
     }
 
-    .delete-btn:hover { opacity: 0.85; transform: translateY(-1px); text-decoration: none; }
-
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    .cta-btn:hover { opacity: 0.85; transform: translateY(-1px); text-decoration: none; }
 
     /* contact */
     .contact-grid {
@@ -612,7 +586,11 @@
       flex-wrap: wrap;
     }
 
-    .footer-logo { display: flex; align-items: center; gap: 8px; }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     .footer-logo-mark {
       width: 24px;
@@ -662,7 +640,7 @@
       .section { grid-template-columns: 1fr; gap: 20px; }
       .section-aside { position: static; padding-right: 0; }
       .contact-grid { grid-template-columns: 1fr; }
-      .action-card { flex-direction: column; align-items: flex-start; }
+      .deletion-cta { flex-direction: column; align-items: flex-start; }
       footer { padding: 24px 20px; }
     }
   </style>
@@ -675,17 +653,17 @@
       <span class="logo-text">ScoreCalci</span>
     </a>
     <nav>
-      <a href="privacy-policy-v3.html">Privacy</a>
-      <a href="#" class="active">Data Deletion</a>
+      <a href="#" class="active">Privacy</a>
+      <a href="deletion.html">Data Deletion</a>
       <a href="mailto:priteshkumar0405@gmail.com">Contact</a>
     </nav>
   </header>
 
   <section class="hero">
     <div class="hero-left">
-      <div class="hero-eyebrow">Legal Document, Data Deletion</div>
-      <h1>Your data,<em>your choice.</em></h1>
-      <p class="hero-desc">We respect your right to control your personal data. This page explains what we store, how to delete it, and what happens when you do.</p>
+      <div class="hero-eyebrow">Legal Document, Privacy Policy</div>
+      <h1>Your data,<em>your rules.</em></h1>
+      <p class="hero-desc">We built ScoreCalci to be private and offline-first. This policy explains exactly what data we touch — and what we don't.</p>
     </div>
     <div class="hero-right">
       <div>
@@ -693,7 +671,7 @@
         <div class="meta-list">
           <div>
             <div class="meta-key">Effective Date</div>
-            <div class="meta-val">June 2026</div>
+            <div class="meta-val">June 11, 2026</div>
           </div>
           <div>
             <div class="meta-key">Application</div>
@@ -704,24 +682,28 @@
             <div class="meta-val">Android</div>
           </div>
           <div>
-            <div class="meta-key">Response Time</div>
-            <div class="meta-val">≤ 30 days</div>
+            <div class="meta-key">Version</div>
+            <div class="meta-val">1.0</div>
           </div>
         </div>
       </div>
       <div class="panel-footer">
         <span class="status-dot"></span>
-        <span class="status-text">Deletion Available</span>
+        <span class="status-text">Current & Active</span>
       </div>
     </div>
   </section>
 
-  <div class="toc-strip">
-    <a href="#s1" class="toc-item" data-section="s1"><span class="toc-num">01</span><span class="toc-label">What We Collect</span></a>
-    <a href="#s2" class="toc-item" data-section="s2"><span class="toc-num">02</span><span class="toc-label">How to Delete</span></a>
-    <a href="#s3" class="toc-item" data-section="s3"><span class="toc-num">03</span><span class="toc-label">Email Request</span></a>
-    <a href="#s4" class="toc-item" data-section="s4"><span class="toc-num">04</span><span class="toc-label">Retention</span></a>
-    <a href="#s5" class="toc-item" data-section="s5"><span class="toc-num">05</span><span class="toc-label">Contact</span></a>
+  <div class="toc-strip" id="toc">
+    <a href="#s1" class="toc-item" data-section="s1"><span class="toc-num">01</span><span class="toc-label">Overview</span></a>
+    <a href="#s2" class="toc-item" data-section="s2"><span class="toc-num">02</span><span class="toc-label">Data Collected</span></a>
+    <a href="#s3" class="toc-item" data-section="s3"><span class="toc-num">03</span><span class="toc-label">Authentication</span></a>
+    <a href="#s4" class="toc-item" data-section="s4"><span class="toc-num">04</span><span class="toc-label">Storage</span></a>
+    <a href="#s5" class="toc-item" data-section="s5"><span class="toc-num">05</span><span class="toc-label">Sharing</span></a>
+    <a href="#s6" class="toc-item" data-section="s6"><span class="toc-num">06</span><span class="toc-label">Deletion</span></a>
+    <a href="#s7" class="toc-item" data-section="s7"><span class="toc-num">07</span><span class="toc-label">Children</span></a>
+    <a href="#s8" class="toc-item" data-section="s8"><span class="toc-num">08</span><span class="toc-label">Changes</span></a>
+    <a href="#s9" class="toc-item" data-section="s9"><span class="toc-num">09</span><span class="toc-label">Contact</span></a>
   </div>
 
   <main>
@@ -729,28 +711,12 @@
     <div class="section" id="s1">
       <div class="section-aside">
         <div class="section-num">01</div>
-        <div class="section-title">What We Collect</div>
+        <div class="section-title">Overview</div>
       </div>
       <div class="section-body">
-        <p>ScoreCalci collects only the data you create within the app. We do not collect personal identifiers, location, or payment information.</p>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Type</th>
-              <th>Storage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Identity</td><td>Anonymous Firebase UID</td><td>Cloud</td></tr>
-            <tr><td>Match Data</td><td>Scores, sport, players, duration, result</td><td>Device + Cloud</td></tr>
-            <tr><td>Player Data</td><td>Player names, avatar preferences</td><td>Device only</td></tr>
-            <tr><td>Tournament Data</td><td>Brackets, rounds, progression</td><td>Device + Cloud</td></tr>
-            <tr><td>App Preferences</td><td>Theme, settings</td><td>Device only</td></tr>
-          </tbody>
-        </table>
+        <p>ScoreCalci is a sports scoring and tournament management application. We collect only the data you actively create inside the app. We do not collect any personal, behavioural, or device-level data.</p>
         <div class="callout">
-          <p>We do <strong>not</strong> collect your name, email, phone number, location, or any personally identifiable information. Authentication is fully anonymous.</p>
+          <p><strong>No account creation required.</strong> No email. No phone number. No password. Authentication is fully anonymous — you're never asked to identify yourself.</p>
         </div>
       </div>
     </div>
@@ -758,60 +724,29 @@
     <div class="section" id="s2">
       <div class="section-aside">
         <div class="section-num">02</div>
-        <div class="section-title">How to Delete</div>
+        <div class="section-title">Data We Collect</div>
       </div>
       <div class="section-body">
-        <p>You can delete all your data directly from within the app at any time — no contact required.</p>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-content">
-              <h3>Open Settings</h3>
-              <p>Tap the settings icon on the main screen of ScoreCalci.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-content">
-              <h3>Go to Data &amp; Backup</h3>
-              <p>Select <strong>Data &amp; Backup</strong> from the settings menu.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-content">
-              <h3>Clear Match History</h3>
-              <p>Tap <strong>Clear All Match History</strong> under the Danger Zone section to remove all local and cloud match data.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-content">
-              <h3>Uninstall the App</h3>
-              <p>Uninstalling ScoreCalci removes all locally stored data — players, tournaments, and preferences — immediately.</p>
-            </div>
-          </div>
-        </div>
+        <p>ScoreCalci collects only what you explicitly create:</p>
+        <ul>
+          <li><strong>Match records</strong> — scores, sport type, date, players or teams you enter, and match duration.</li>
+          <li><strong>Tournament records</strong> — bracket data, round results, and settings you configure.</li>
+          <li><strong>Player names</strong> — names you enter for saved players. No photos, bios, or contact details.</li>
+          <li><strong>App preferences</strong> — theme and display settings stored locally on your device.</li>
+        </ul>
+        <p>We do <strong>not</strong> collect your name, email, phone number, location, payment information, browsing history, or any device identifiers.</p>
       </div>
     </div>
 
     <div class="section" id="s3">
       <div class="section-aside">
         <div class="section-num">03</div>
-        <div class="section-title">Email Request</div>
+        <div class="section-title">Authentication</div>
       </div>
       <div class="section-body">
-        <p>Prefer to contact us directly? Send a deletion request and we'll process it within 30 days and confirm by email.</p>
-        <div class="action-card">
-          <div>
-            <div class="action-label">⚠ Alternative Method</div>
-            <h3>Request Deletion by Email</h3>
-            <p>Include your device model and approximate install date to help us locate your anonymous account data.</p>
-          </div>
-          <a class="delete-btn" href="mailto:priteshkumar0405@gmail.com?subject=ScoreCalci%20Data%20Deletion%20Request&body=Hello%2C%0A%0AI%20would%20like%20to%20request%20deletion%20of%20all%20data%20associated%20with%20my%20ScoreCalci%20account.%0A%0ADevice%3A%20%5Byour%20device%5D%0AApproximate%20install%20date%3A%20%5Boptional%5D%0A%0AThank%20you.">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 4l8 9 8-9"/></svg>
-            Send Request
-          </a>
+        <p>ScoreCalci uses <strong>anonymous authentication</strong> via Firebase Auth. A random, non-identifiable user ID is generated automatically when you first open the app. No registration or login is required.</p>
+        <div class="callout">
+          <p>Your anonymous UID is a random string — it cannot be linked back to you as an individual. It exists only to scope your cloud data so no other user can access it.</p>
         </div>
       </div>
     </div>
@@ -819,38 +754,90 @@
     <div class="section" id="s4">
       <div class="section-aside">
         <div class="section-num">04</div>
-        <div class="section-title">Retention After Deletion</div>
+        <div class="section-title">How Data Is Stored</div>
       </div>
       <div class="section-body">
-        <p>Once a deletion request is processed, here is how quickly each data type is removed:</p>
+        <p>Your data is stored in two locations depending on its type:</p>
         <table class="data-table">
           <thead>
             <tr>
               <th>Data Type</th>
-              <th>Storage</th>
-              <th>Removed</th>
+              <th>Description</th>
+              <th>Location</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Local match history, players, tournaments</td><td>SharedPreferences (device)</td><td><span class="tag immediate">Immediate</span></td></tr>
-            <tr><td>Cloud match &amp; tournament records</td><td>Firebase Firestore</td><td><span class="tag immediate">Immediate</span></td></tr>
-            <tr><td>Anonymous Firebase account</td><td>Firebase Auth</td><td><span class="tag days30">≤ 30 days</span></td></tr>
-            <tr><td>App preferences &amp; theme settings</td><td>Device</td><td><span class="tag uninstall">On uninstall</span></td></tr>
+            <tr><td>Match records</td><td>Scores, players, sport, result, duration</td><td><span class="tag both">Device + Cloud</span></td></tr>
+            <tr><td>Tournament records</td><td>Brackets, rounds, progression</td><td><span class="tag both">Device + Cloud</span></td></tr>
+            <tr><td>Player names</td><td>Saved player profiles</td><td><span class="tag device">Device only</span></td></tr>
+            <tr><td>App preferences</td><td>Theme, display settings</td><td><span class="tag device">Device only</span></td></tr>
+            <tr><td>Anonymous UID</td><td>Firebase Auth identifier</td><td><span class="tag cloud">Cloud only</span></td></tr>
           </tbody>
         </table>
-        <div class="callout">
-          <p>We do not retain backups of deleted user data beyond the standard Firebase 30-day account deletion window.</p>
-        </div>
+        <p><strong>Device storage</strong> uses Android SharedPreferences. <strong>Cloud storage</strong> uses Google Cloud Firestore, strictly scoped to your anonymous UID.</p>
       </div>
     </div>
 
     <div class="section" id="s5">
       <div class="section-aside">
         <div class="section-num">05</div>
+        <div class="section-title">Data Sharing</div>
+      </div>
+      <div class="section-body">
+        <p>We do not sell, trade, rent, or share your data with any third parties for marketing or advertising purposes.</p>
+        <p>Your data is stored in <strong>Google Firebase</strong> infrastructure and is also governed by <a href="https://firebase.google.com/support/privacy" target="_blank">Google's Privacy Policy</a>. Firebase is used solely for anonymous authentication and cloud sync — not analytics or advertising.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <div class="section-aside">
+        <div class="section-num">06</div>
+        <div class="section-title">Data Deletion</div>
+      </div>
+      <div class="section-body">
+        <p>You have full control over your data and can delete it at any time:</p>
+        <ul>
+          <li>Delete match history from within the app via <strong>Settings → Data &amp; Backup → Clear All Match History</strong>.</li>
+          <li>Uninstalling ScoreCalci removes all locally stored data immediately.</li>
+          <li>Cloud data is deleted within 30 days of an account deletion request.</li>
+        </ul>
+        <div class="deletion-cta">
+          <p><strong>Want the full breakdown?</strong> Our dedicated page covers retention timelines, in-app steps, and how to request deletion by email.</p>
+          <a class="cta-btn" href="deletion.html">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Deletion Policy
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <div class="section-aside">
+        <div class="section-num">07</div>
+        <div class="section-title">Children's Privacy</div>
+      </div>
+      <div class="section-body">
+        <p>ScoreCalci is not directed to children under 13. We do not knowingly collect personal information from children. If you believe a child has provided data through our app, contact us and we will remove it promptly.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <div class="section-aside">
+        <div class="section-num">08</div>
+        <div class="section-title">Changes to This Policy</div>
+      </div>
+      <div class="section-body">
+        <p>If we make material changes to this policy, we will update the effective date at the top of this page and publish the revised version at this URL. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <div class="section-aside">
+        <div class="section-num">09</div>
         <div class="section-title">Contact</div>
       </div>
       <div class="section-body">
-        <p>For any questions regarding your data or this policy, reach out through the following channels:</p>
+        <p>Questions or concerns about this privacy policy can be directed to:</p>
         <div class="contact-grid">
           <div class="contact-card"><div class="ck">Email</div><div class="cv"><a href="mailto:priteshkumar0405@gmail.com">priteshkumar0405@gmail.com</a></div></div>
           <div class="contact-card"><div class="ck">Response Time</div><div class="cv">Within 30 days</div></div>
@@ -868,8 +855,8 @@
       <span class="footer-logo-text">ScoreCalci</span>
     </div>
     <div class="footer-links">
-      <a href="privacy-policy-v3.html">Privacy</a>
-      <a href="#">Deletion</a>
+      <a href="#">Privacy</a>
+      <a href="deletion.html">Deletion</a>
       <a href="mailto:priteshkumar0405@gmail.com">Contact</a>
     </div>
     <p>© 2026 ScoreCalci. All rights reserved.</p>
@@ -879,6 +866,7 @@
     const sections = document.querySelectorAll('.section');
     const tocItems = document.querySelectorAll('.toc-item');
 
+    // ── Animate sections in on scroll ──
     sections.forEach(s => s.classList.add('will-animate'));
 
     function revealSections() {
@@ -891,6 +879,7 @@
       });
     }
 
+    // ── Active TOC on scroll ──
     function updateToc() {
       let current = null;
       sections.forEach(s => {
@@ -907,6 +896,7 @@
       updateToc();
     }, { passive: true });
 
+    // Run once on load
     revealSections();
     updateToc();
   </script>
